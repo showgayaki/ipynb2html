@@ -68,11 +68,9 @@
 .output-code{
     padding-top: 0;
 }
-.output-code img{
-    max-width: 100%;
-}
 .output-code pre{
     font-family: monospace;
+    background-color: #fff;
 }
 .output-code table{
     margin-bottom: 1rem;
