@@ -38,25 +38,33 @@ function shapeInputs(source, cellType, executionCount){
     for(let i = 0; i < source.length; i++){
         if(cellType === 'markdown'){
             // markdown記法箇所抜き出し
-            const mark = source[i].split(' ')[0]
+            const mark = source[i].trim().split(' ')[0];
             if(mark.indexOf('#') !== -1){
                 // hタグ
                 const hash = source[i].match(/\#+\s*/g)[0];
                 const hashTrimmed = hash.trim();
-                cell += '<h' + hashTrimmed.length + '>' + source[i].replace(hash, '') + '</h' + hashTrimmed.length + '>\n';
-            }else if(mark === '*'){
+                cell += '<h' + hashTrimmed.length + '>' + source[i].replace(hash, '').replace('\n', '') + '</h' + hashTrimmed.length + '>\n';
+            }else if(mark === '*' || mark === '-' || mark === '+'){
                 // ul開始タグ
-                if(i === 0 || source[i - 1].split(' ')[0].indexOf('*') === -1){
-                    cell += '<ul>\n'
+                if(i === 0 || source[i - 1].indexOf('  ' + mark + ' ') === -1){
+                    cell += '<ul>\n';
                 }
-                cell += '<li>' + source[i].replace(/\*\s*/g, '').replace('\n', '') + '</li>\n';
+                cell += '<li>' + source[i].replace(mark, '').replace('\n', '') + '</li>\n';
 
                 // ul終了タグ
-                if((i === source.length - 1) || (source[i + 1].split(' ')[0].indexOf('*') === -1)){
+                if((i === source.length - 1) || (source[i + 1].indexOf('  ' + mark + ' ') === -1) || source[i + 1] === '\n'){
                     cell += '</ul>\n';
                 }
-            }else if(source[i] !== '\n'){
-                cell += '<p>' + source[i].replace(/&lt;/g, '<').replace(/&gt;/g, '>') +'</p>\n';
+            }else if(source[i].match(/\*\*(.+?)\*\*/)){
+                cell += source[i].replace(/\*\*/, '<strong>').replace(/\*\*/, '</strong>');
+            }else if(source[i].match(/_(.+?)_/)){
+                cell += source[i].replace(/_/, '<i>').replace(/_/, '</i>');
+            }else if(source[i].match(/\[(.+?)\]\((.+?)\)/)){
+                const anchor = source[i].match(/\[(.+?)\]\((.+?)\)/);
+                cell += source[i].replace(/\[(.+?)\]\((.+?)\)/, '<a href="' + anchor[2] + '">' + anchor[1] + '</a>')
+            }
+            else if(source[i] !== '\n'){
+                cell += '<p>' + source[i].replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace('\n', '') +'</p>\n';
             }
         }else if(cellType === 'code'){
             cell += (i === 0) ? '<pre><code class="python">' : '';

@@ -19,7 +19,7 @@
 </head>
 <body>
     <div id="ipynb-cells">
-        <script src="https://gist-it.appspot.com/https://github.com/showgayaki/cnn_pytorch/blob/master/cnn_pytorch.ipynb"></script>
+        <script src="https://gist-it.appspot.com/https://github.com/showgayaki/ipynb2html/blob/master/sample.ipynb"></script>
     </div>
     <script src="js/vendor/jquery-3.5.1.slim.min.js"></script>
     <script src="js/ipynb2html.js"></script>
@@ -34,5 +34,8 @@
 ```
 
 ## 対応済みmarkdown
-- \# (見出し)
-- \* (リスト)
+- \# : 見出し
+- \*, \- : リスト
+- ** ** : 太字
+- _ _ : イタリック
+-[]() : リンク
